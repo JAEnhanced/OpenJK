@@ -76,7 +76,7 @@ void LoadTGA ( const char *name, byte **pic, int *width, int *height)
 	// load the file
 	//
 	byte *pTempLoadedBuffer = 0;
-	ri->FS_ReadFile ( ( char * ) name, (void **)&pTempLoadedBuffer);
+	ri.FS_ReadFile ( ( char * ) name, (void **)&pTempLoadedBuffer);
 	if (!pTempLoadedBuffer) {
 		return;
 	}
@@ -375,7 +375,7 @@ void LoadTGA ( const char *name, byte **pic, int *width, int *height)
 
 TGADone:
 
-	ri->FS_FreeFile (pTempLoadedBuffer);
+	ri.FS_FreeFile (pTempLoadedBuffer);
 
 	if (bFormatErrors)
 	{

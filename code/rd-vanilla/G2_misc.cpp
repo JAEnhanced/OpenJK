@@ -581,7 +581,7 @@ void G2_TransformModel(CGhoul2Info_v &ghoul2, const int frameNum, vec3_t scale, 
 #ifndef JK2_MODE
 	if ( cg_g2MarksAllModels == NULL )
 	{
-		cg_g2MarksAllModels = ri->Cvar_Get( "cg_g2MarksAllModels", "0", 0 );
+		cg_g2MarksAllModels = ri.Cvar_Get( "cg_g2MarksAllModels", "0", 0 );
 	}
 
 	if (cg_g2MarksAllModels == NULL
@@ -1571,7 +1571,7 @@ void G2_TraceModels(CGhoul2Info_v &ghoul2, vec3_t rayStart, vec3_t rayEnd, CColl
 #ifndef JK2_MODE
 	if ( cg_g2MarksAllModels == NULL )
 	{
-		cg_g2MarksAllModels = ri->Cvar_Get( "cg_g2MarksAllModels", "0", 0 );
+		cg_g2MarksAllModels = ri.Cvar_Get( "cg_g2MarksAllModels", "0", 0 );
 	}
 
 	if (cg_g2MarksAllModels == NULL
@@ -1785,7 +1785,7 @@ void G2_SaveGhoul2Models(
 	CGhoul2Info_v& ghoul2)
 {
 	ojk::SavedGameHelper saved_game(
-		::ri->saved_game);
+		::ri.saved_game);
 
 	saved_game.reset_buffer();
 
@@ -1881,7 +1881,7 @@ void G2_LoadGhoul2Model(
 	static_cast<void>(buffer);
 
 	ojk::SavedGameHelper saved_game(
-		::ri->saved_game);
+		::ri.saved_game);
 
 	// first thing, lets see how many ghoul2 models we have, and resize our buffers accordingly
 	int model_count = 0;
@@ -1919,7 +1919,7 @@ void G2_LoadGhoul2Model(
 
 		// load the ghoul2 info from the buffer
 		ghoul2[i].sg_import(
-			saved_game, ::ri->saved_game->version());
+			saved_game, ::ri.saved_game->version());
 
 		if (ghoul2[i].mModelindex != -1 && ghoul2[i].mFileName[0])
 		{
@@ -1941,7 +1941,7 @@ void G2_LoadGhoul2Model(
 		for (decltype(surface_count) x = 0; x < surface_count; ++x)
 		{
 			ghoul2[i].mSlist[x].sg_import(
-				saved_game, ::ri->saved_game->version());
+				saved_game, ::ri.saved_game->version());
 		}
 
 		// give us enough bones to load up the data
@@ -1957,7 +1957,7 @@ void G2_LoadGhoul2Model(
 		for (decltype(bone_count) x = 0; x < bone_count; ++x)
 		{
 			ghoul2[i].mBlist[x].sg_import(
-				saved_game, ::ri->saved_game->version());
+				saved_game, ::ri.saved_game->version());
 		}
 
 		// give us enough bolts to load up the data
@@ -1973,7 +1973,7 @@ void G2_LoadGhoul2Model(
 		for (decltype(bolt_count) x = 0; x < bolt_count; ++x)
 		{
 			ghoul2[i].mBltlist[x].sg_import(
-				saved_game, ::ri->saved_game->version());
+				saved_game, ::ri.saved_game->version());
 		}
 	}
 

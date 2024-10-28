@@ -1645,7 +1645,7 @@ void CG_AddViewWeapon( playerState_t *ps )
 			CG_DoMuzzleFlash( cent, flash.origin, flash.axis[0], wData );
 		}
 		else {
-			CGhoul2Info_v& s = *gun.ghoul2;
+			CGhoul2Info_v& s = *((CGhoul2Info_v *)gun.ghoul2);
 			mdxaBone_t	boltMatrix;
 			vec3_t	setAngles;
 			

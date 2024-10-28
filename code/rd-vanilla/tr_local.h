@@ -34,7 +34,7 @@ along with this program; if not, see <http://www.gnu.org/licenses/>.
 #define GL_INDEX_TYPE		GL_UNSIGNED_INT
 typedef unsigned int glIndex_t;
 
-extern refimport_t *ri;
+extern refimport_t ri;
 
 
 // 13 bits
@@ -838,7 +838,7 @@ Ghoul2 Insert End
 
 void		R_ModelInit (void);
 model_t		*R_GetModelByHandle( qhandle_t hModel );
-void		R_LerpTag( orientation_t *tag, qhandle_t handle, int startFrame, int endFrame,
+int			R_LerpTag( orientation_t *tag, qhandle_t handle, int startFrame, int endFrame,
 					 float frac, const char *tagName );
 void		R_ModelBounds( qhandle_t handle, vec3_t mins, vec3_t maxs );
 
@@ -1072,6 +1072,16 @@ typedef struct {
 	float					distanceCull;
 } trGlobals_t;
 
+struct glconfigExt_t
+{
+	glconfig_t *glConfig;
+
+	qboolean textureFilterAnisotropicAvailable;
+	qboolean doGammaCorrectionWithShaders;
+	qboolean doStencilShadowsInOneDrawcall;
+	const char *originalExtensionString;
+};
+
 int		 R_Images_StartIteration(void);
 image_t *R_Images_GetNextIteration(void);
 void	 R_Images_Clear(void);
@@ -1082,6 +1092,7 @@ void	 R_Images_DeleteImage(image_t *pImage);
 extern backEndState_t	backEnd;
 extern trGlobals_t	tr;
 extern glconfig_t	glConfig;		// outside of TR since it shouldn't be cleared during ref re-init
+extern glconfigExt_t glConfigExt;
 extern glstate_t	glState;		// outside of TR since it shouldn't be cleared during ref re-init
 extern window_t		window;
 
@@ -1565,7 +1576,7 @@ void R_InitNextFrame( void );
 
 void RE_ClearScene( void );
 void RE_AddRefEntityToScene( const refEntity_t *ent );
-void RE_AddPolyToScene( qhandle_t hShader , int numVerts, const polyVert_t *verts );
+void RE_AddPolyToScene( qhandle_t hShader , int numVerts, const polyVert_t *verts, int numPolys );
 void RE_AddLightToScene( const vec3_t org, float intensity, float r, float g, float b );
 void RE_RenderScene( const refdef_t *fd );
 

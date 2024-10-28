@@ -2578,7 +2578,7 @@ void R_AddGhoulSurfaces( trRefEntity_t *ent ) {
 	}
 
 	assert (ent->e.ghoul2);	//entity is foo if it has a glm model handle but no ghoul2 pointer!
-	CGhoul2Info_v	&ghoul2 = *ent->e.ghoul2;
+	CGhoul2Info_v	&ghoul2 = *((CGhoul2Info_v *)ent->e.ghoul2);
 
 	if (!G2_SetupModelPointers(ghoul2))
 	{
@@ -3541,7 +3541,7 @@ qboolean R_LoadMDXM( model_t *mod, void *buffer, const char *mod_name, qboolean 
 #ifdef _DEBUG
 		Com_Error( ERR_DROP,       "R_LoadMDXM: %s has wrong version (%i should be %i)\n", mod_name, version, MDXM_VERSION);
 #else
-		ri->Printf( PRINT_WARNING, "R_LoadMDXM: %s has wrong version (%i should be %i)\n", mod_name, version, MDXM_VERSION);
+		ri.Printf( PRINT_WARNING, "R_LoadMDXM: %s has wrong version (%i should be %i)\n", mod_name, version, MDXM_VERSION);
 #endif
 		return qfalse;
 	}
@@ -3615,7 +3615,7 @@ qboolean R_LoadMDXM( model_t *mod, void *buffer, const char *mod_name, qboolean 
 
 	if (!mdxm->animIndex)
 	{
-		ri->Printf( PRINT_WARNING, "R_LoadMDXM: missing animation file %s for mesh %s\n", mdxm->animName, mdxm->name);
+		ri.Printf( PRINT_WARNING, "R_LoadMDXM: missing animation file %s for mesh %s\n", mdxm->animName, mdxm->name);
 		return qfalse;
 	}
 #ifndef JK2_MODE
@@ -3630,14 +3630,14 @@ qboolean R_LoadMDXM( model_t *mod, void *buffer, const char *mod_name, qboolean 
 		{
 			if ( isAnOldModelFile )
 			{
-				ri->Printf( PRINT_WARNING, "R_LoadMDXM: converting jk2 model %s\n", mod_name);
+				ri.Printf( PRINT_WARNING, "R_LoadMDXM: converting jk2 model %s\n", mod_name);
 			}
 			else
 			{
 #ifdef _DEBUG
 				Com_Error( ERR_DROP,       "R_LoadMDXM: %s has different bones than anim (%i != %i)\n", mod_name, mdxm->numBones, tr.models[mdxm->animIndex]->mdxa->numBones);
 #else
-				ri->Printf( PRINT_WARNING, "R_LoadMDXM: %s has different bones than anim (%i != %i)\n", mod_name, mdxm->numBones, tr.models[mdxm->animIndex]->mdxa->numBones);
+				ri.Printf( PRINT_WARNING, "R_LoadMDXM: %s has different bones than anim (%i != %i)\n", mod_name, mdxm->numBones, tr.models[mdxm->animIndex]->mdxa->numBones);
 #endif
 			}
 			if ( !isAnOldModelFile )
@@ -3767,9 +3767,9 @@ qboolean R_LoadMDXM( model_t *mod, void *buffer, const char *mod_name, qboolean 
 			tri = (mdxmTriangle_t *) ( (byte *)surf + surf->ofsTriangles );
 			for ( j = 0 ; j < surf->numTriangles ; j++, tri++ )
 			{
-				LL(tri->indexes[0]);
-				LL(tri->indexes[1]);
-				LL(tri->indexes[2]);
+				LL(tri.indexes[0]);
+				LL(tri.indexes[1]);
+				LL(tri.indexes[2]);
 			}
 
 			// swap all the vertexes
@@ -3859,7 +3859,7 @@ qboolean R_LoadMDXA( model_t *mod, void *buffer, const char *mod_name, qboolean 
 	}
 
 	if (version != MDXA_VERSION) {
-		ri->Printf( PRINT_WARNING, "R_LoadMDXA: %s has wrong version (%i should be %i)\n",
+		ri.Printf( PRINT_WARNING, "R_LoadMDXA: %s has wrong version (%i should be %i)\n",
 				 mod_name, version, MDXA_VERSION);
 		return qfalse;
 	}
@@ -3897,7 +3897,7 @@ qboolean R_LoadMDXA( model_t *mod, void *buffer, const char *mod_name, qboolean 
 	}
 
  	if ( mdxa->numFrames < 1 ) {
-		ri->Printf( PRINT_WARNING, "R_LoadMDXA: %s has no frames\n", mod_name );
+		ri.Printf( PRINT_WARNING, "R_LoadMDXA: %s has no frames\n", mod_name );
 		return qfalse;
 	}
 

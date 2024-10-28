@@ -73,7 +73,7 @@ void RE_StretchRaw (int x, int y, int w, int h, int cols, int rows, const byte *
 #ifdef TIMEBIND
 		if ( r_ignore->integer )
 		{
-			start = ri->Milliseconds();
+			start = ri.Milliseconds();
 		}
 #endif
 
@@ -87,8 +87,8 @@ void RE_StretchRaw (int x, int y, int w, int h, int cols, int rows, const byte *
 #ifdef TIMEBIND
 		if ( r_ignore->integer )
 		{
-			end = ri->Milliseconds();
-			ri->Printf( PRINT_ALL, "qglTexImage2D %i, %i: %i msec\n", cols, rows, end - start );
+			end = ri.Milliseconds();
+			ri.Printf( PRINT_ALL, "qglTexImage2D %i, %i: %i msec\n", cols, rows, end - start );
 		}
 #endif
 	}
@@ -102,7 +102,7 @@ void RE_StretchRaw (int x, int y, int w, int h, int cols, int rows, const byte *
 	#ifdef TIMEBIND
 			if ( r_ignore->integer )
 			{
-				start = ri->Milliseconds();
+				start = ri.Milliseconds();
 			}
 	#endif
 
@@ -111,8 +111,8 @@ void RE_StretchRaw (int x, int y, int w, int h, int cols, int rows, const byte *
 	#ifdef TIMEBIND
 			if ( r_ignore->integer )
 			{
-				end = ri->Milliseconds();
-				ri->Printf( PRINT_ALL, "qglTexSubImage2D %i, %i: %i msec\n", cols, rows, end - start );
+				end = ri.Milliseconds();
+				ri.Printf( PRINT_ALL, "qglTexSubImage2D %i, %i: %i msec\n", cols, rows, end - start );
 			}
 	#endif
 		}
@@ -488,12 +488,12 @@ qboolean RE_ProcessDissolve(void)
 			//	should let things work properly...
 			//
 			Dissolve.bTouchNeeded = qfalse;
-			Dissolve.iStartTime = ri->Milliseconds();
+			Dissolve.iStartTime = ri.Milliseconds();
 		}
 
-		int iDissolvePercentage = ((ri->Milliseconds() - Dissolve.iStartTime)*100) / (1000.0f * fDISSOLVE_SECONDS);
+		int iDissolvePercentage = ((ri.Milliseconds() - Dissolve.iStartTime)*100) / (1000.0f * fDISSOLVE_SECONDS);
 
-//		ri->Printf(PRINT_ALL,"iDissolvePercentage %d\n",iDissolvePercentage);
+//		ri.Printf(PRINT_ALL,"iDissolvePercentage %d\n",iDissolvePercentage);
 
 		if (iDissolvePercentage <= 100)
 		{
@@ -760,7 +760,7 @@ qboolean RE_InitDissolve(qboolean bForceCircularExtroWipe)
 {
 	R_IssuePendingRenderCommands();
 
-//	ri->Printf( PRINT_ALL, "RE_InitDissolve()\n");
+//	ri.Printf( PRINT_ALL, "RE_InitDissolve()\n");
 	qboolean bReturn = qfalse;
 
 	if (//Dissolve.iStartTime == 0	// no point in interruping an existing one
@@ -1008,7 +1008,7 @@ qboolean RE_InitDissolve(qboolean bForceCircularExtroWipe)
 			//
 			if (Dissolve.pDissolve)	// test if image was found, if not, don't do dissolves
 			{
-				Dissolve.iStartTime = ri->Milliseconds();	// gets overwritten first time, but MUST be set to NZ
+				Dissolve.iStartTime = ri.Milliseconds();	// gets overwritten first time, but MUST be set to NZ
 				Dissolve.bTouchNeeded = qtrue;
 				bReturn = qtrue;
 			}

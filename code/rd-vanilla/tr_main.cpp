@@ -43,7 +43,7 @@ static float	s_flipMatrix[16] = {
 	0, 0, 0, 1
 };
 
-refimport_t *ri = NULL;
+refimport_t ri;
 
 // entities that will have procedurally generated surfaces will just
 // point at this for their sorting surface
@@ -817,7 +817,7 @@ qboolean R_GetPortalOrientations( drawSurf_t *drawSurf, int entityNum,
 	// to see a surface before the server has communicated the matching
 	// portal surface entity, so we don't want to print anything here...
 
-	//ri->Printf( PRINT_ALL, "Portal surface without a portal entity\n" );
+	//ri.Printf( PRINT_ALL, "Portal surface without a portal entity\n" );
 
 	return qfalse;
 }
@@ -998,7 +998,7 @@ qboolean R_MirrorViewBySurface (drawSurf_t *drawSurf, int entityNum) {
 	// don't recursively mirror
 	if (tr.viewParms.isPortal)
 	{
-		ri->Printf( PRINT_DEVELOPER, "WARNING: recursive mirror/portal found\n" );
+		ri.Printf( PRINT_DEVELOPER, "WARNING: recursive mirror/portal found\n" );
 		return qfalse;
 	}
 
@@ -1436,7 +1436,7 @@ void R_DebugGraphics( void ) {
 
 	GL_Bind( tr.whiteImage);
 	GL_Cull( CT_FRONT_SIDED );
-	ri->CM_DrawDebugSurface( R_DebugPolygon );
+	ri.CM_DrawDebugSurface( R_DebugPolygon );
 }
 
 qboolean R_FogParmsMatch( int fog1, int fog2 )
@@ -1456,7 +1456,7 @@ void R_SetViewFogIndex (void)
 	if ( tr.world->numfogs > 1 )
 	{//more than just the LA goggles
 		fog_t *fog;
-		int contents = ri->SV_PointContents( tr.refdef.vieworg, 0 );
+		int contents = ri.SV_PointContents( tr.refdef.vieworg, 0 );
 		if ( (contents&CONTENTS_FOG) )
 		{//only take a tr.refdef.fogIndex if the tr.refdef.vieworg is actually *in* that fog brush (assumption: checks pointcontents for any CONTENTS_FOG, not that particular brush...)
 			for ( tr.refdef.fogIndex = 1 ; tr.refdef.fogIndex < tr.world->numfogs ; tr.refdef.fogIndex++ )

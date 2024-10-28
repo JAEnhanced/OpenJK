@@ -60,7 +60,7 @@ void GL_Bind( image_t *image ) {
 	int texnum;
 
 	if ( !image ) {
-		ri->Printf( PRINT_WARNING, "GL_Bind: NULL image\n" );
+		ri.Printf( PRINT_WARNING, "GL_Bind: NULL image\n" );
 		texnum = tr.defaultImage->texnum;
 	} else {
 		texnum = image->texnum;
@@ -998,7 +998,7 @@ void	RB_SetGL2D (void) {
 	qglDisable( GL_CLIP_PLANE0 );
 
 	// set time for 2D shaders
-	backEnd.refdef.time = ri->Milliseconds();
+	backEnd.refdef.time = ri.Milliseconds();
 	backEnd.refdef.floatTime = backEnd.refdef.time * 0.001f;
 }
 
@@ -1489,7 +1489,7 @@ void RB_ShowImages( void ) {
 
 	qglFinish();
 
-	//start = ri->Milliseconds();
+	//start = ri.Milliseconds();
 
 	int i=0;
 //	int iNumImages =
@@ -1523,8 +1523,8 @@ void RB_ShowImages( void ) {
 
 	qglFinish();
 
-	//end = ri->Milliseconds();
-	//ri->Printf( PRINT_ALL, "%i msec to draw all images\n", end - start );
+	//end = ri.Milliseconds();
+	//ri.Printf( PRINT_ALL, "%i msec to draw all images\n", end - start );
 }
 
 
@@ -1574,7 +1574,7 @@ const void	*RB_SwapBuffers( const void *data ) {
 
     GLimp_LogComment( "***************** RB_SwapBuffers *****************\n\n\n" );
 
-	ri->WIN_Present(&window);
+	ri.WIN_Present(&window);
 
 	backEnd.projection2D = qfalse;
 
@@ -1610,7 +1610,7 @@ RB_ExecuteRenderCommands
 void RB_ExecuteRenderCommands( const void *data ) {
 	int		t1, t2;
 
-	t1 = ri->Milliseconds ();
+	t1 = ri.Milliseconds ();
 
 	while ( 1 ) {
 		data = PADP(data, sizeof(void *));
@@ -1646,7 +1646,7 @@ void RB_ExecuteRenderCommands( const void *data ) {
 		case RC_END_OF_LIST:
 		default:
 			// stop rendering
-			t2 = ri->Milliseconds ();
+			t2 = ri.Milliseconds ();
 			backEnd.pc.msec = t2 - t1;
 			return;
 		}

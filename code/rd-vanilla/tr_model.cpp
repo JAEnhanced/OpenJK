@@ -163,7 +163,7 @@ qboolean RE_RegisterModels_GetDiskFile( const char *psModelFileName, void **ppvB
 				return qtrue;
 			}
 
-		ri->FS_ReadFile( sModelName, ppvBuffer );
+		ri.FS_ReadFile( sModelName, ppvBuffer );
 		*pqbAlreadyCached = qfalse;
 
 		return (qboolean)(*ppvBuffer != 0);
@@ -288,8 +288,8 @@ qboolean RE_RegisterModels_LevelLoadEnd(qboolean bDeleteEverythingNotUsedThisLev
 			{
 	#ifdef _DEBUG
 //				LPCSTR psModelName = (*itModel).first.c_str();
-//				ri->Printf( PRINT_DEVELOPER, "Dumping \"%s\"", psModelName);
-//				ri->Printf( PRINT_DEVELOPER, ", used on lvl %d\n",CachedModel.iLastLevelUsedOn);
+//				ri.Printf( PRINT_DEVELOPER, "Dumping \"%s\"", psModelName);
+//				ri.Printf( PRINT_DEVELOPER, ", used on lvl %d\n",CachedModel.iLastLevelUsedOn);
 	#endif
 
 				if (CachedModel.pModelDiskImage) {
@@ -328,15 +328,15 @@ void RE_RegisterModels_Info_f( void )
 	{
 		CachedEndianedModelBinary_t &CachedModel = (*itModel).second;
 
-		ri->Printf( PRINT_ALL, "%d/%d: \"%s\" (%d bytes)",iModel,iModels,(*itModel).first.c_str(),CachedModel.iAllocSize );
+		ri.Printf( PRINT_ALL, "%d/%d: \"%s\" (%d bytes)",iModel,iModels,(*itModel).first.c_str(),CachedModel.iAllocSize );
 
 		#ifdef _DEBUG
-		ri->Printf( PRINT_ALL, ", lvl %d\n",CachedModel.iLastLevelUsedOn);
+		ri.Printf( PRINT_ALL, ", lvl %d\n",CachedModel.iLastLevelUsedOn);
 		#endif
 
 		iTotalBytes += CachedModel.iAllocSize;
 	}
-	ri->Printf( PRINT_ALL, "%d bytes total (%.2fMB)\n",iTotalBytes, (float)iTotalBytes / 1024.0f / 1024.0f);
+	ri.Printf( PRINT_ALL, "%d bytes total (%.2fMB)\n",iTotalBytes, (float)iTotalBytes / 1024.0f / 1024.0f);
 }
 
 
@@ -380,7 +380,7 @@ void RE_RegisterMedia_LevelLoadBegin(const char *psMapName, ForceReload_e eForce
 	{
 		case eForceReload_BSP:
 
-			ri->CM_DeleteCachedMap(qtrue);
+			ri.CM_DeleteCachedMap(qtrue);
 			R_Images_DeleteLightMaps();
 			break;
 
@@ -393,7 +393,7 @@ void RE_RegisterMedia_LevelLoadBegin(const char *psMapName, ForceReload_e eForce
 
 			// BSP...
 			//
-			ri->CM_DeleteCachedMap(qtrue);
+			ri.CM_DeleteCachedMap(qtrue);
 			R_Images_DeleteLightMaps();
 			//
 			// models...
@@ -428,16 +428,16 @@ void RE_RegisterMedia_LevelLoadEnd(void)
 {
 	RE_RegisterModels_LevelLoadEnd(qfalse);
 	RE_RegisterImages_LevelLoadEnd();
-	ri->SND_RegisterAudio_LevelLoadEnd(qfalse);
+	ri.SND_RegisterAudio_LevelLoadEnd(qfalse);
 
 	if (gbAllowScreenDissolve)
 	{
 		RE_InitDissolve(qfalse);
 	}
 
-	ri->S_RestartMusic();
+	ri.S_RestartMusic();
 
-	*(ri->gbAlreadyDoingLoad()) = qfalse;
+	*(ri.gbAlreadyDoingLoad()) = qfalse;
 }
 
 
@@ -557,12 +557,12 @@ Ghoul2 Insert End
 */
 
 	if ( !name || !name[0] ) {
-		ri->Printf( PRINT_WARNING, "RE_RegisterModel: NULL name\n" );
+		ri.Printf( PRINT_WARNING, "RE_RegisterModel: NULL name\n" );
 		return 0;
 	}
 
 	if ( strlen( name ) >= MAX_QPATH ) {
-		ri->Printf( PRINT_DEVELOPER, "Model name exceeds MAX_QPATH\n" );
+		ri.Printf( PRINT_DEVELOPER, "Model name exceeds MAX_QPATH\n" );
 		return 0;
 	}
 
@@ -570,7 +570,7 @@ Ghoul2 Insert End
 Ghoul2 Insert Start
 */
 //	if (!tr.registered) {
-//		ri->Printf( PRINT_WARNING, "RE_RegisterModel (%s) called before ready!\n",name );
+//		ri.Printf( PRINT_WARNING, "RE_RegisterModel (%s) called before ready!\n",name );
 //		return 0;
 //	}
 	//
@@ -620,7 +620,7 @@ Ghoul2 Insert End
 	// allocate a new model_t
 
 	if ( ( mod = R_AllocModel() ) == NULL ) {
-		ri->Printf( PRINT_WARNING, "RE_RegisterModel: R_AllocModel() failed for '%s'\n", name);
+		ri.Printf( PRINT_WARNING, "RE_RegisterModel: R_AllocModel() failed for '%s'\n", name);
 		return 0;
 	}
 
@@ -700,17 +700,17 @@ Ghoul2 Insert End
 
 			default:
 
-				ri->Printf (PRINT_WARNING,"RE_RegisterModel: unknown fileid for %s\n", filename);
+				ri.Printf (PRINT_WARNING,"RE_RegisterModel: unknown fileid for %s\n", filename);
 				goto fail;
 		}
 
 		if (!bAlreadyCached){	// important to check!!
-			ri->FS_FreeFile (buf);
+			ri.FS_FreeFile (buf);
 		}
 
 		if ( !loaded ) {
 			if ( lod == 0 ) {
-				ri->Printf (PRINT_WARNING,"RE_RegisterModel: cannot load %s\n", filename);
+				ri.Printf (PRINT_WARNING,"RE_RegisterModel: cannot load %s\n", filename);
 				goto fail;
 			} else {
 				break;
@@ -812,7 +812,7 @@ static qboolean R_LoadMD3 (model_t *mod, int lod, void *buffer, const char *mod_
 	}
 
 	if (version != MD3_VERSION) {
-		ri->Printf( PRINT_WARNING, "R_LoadMD3: %s has wrong version (%i should be %i)\n",
+		ri.Printf( PRINT_WARNING, "R_LoadMD3: %s has wrong version (%i should be %i)\n",
 				 mod_name, version, MD3_VERSION);
 		return qfalse;
 	}
@@ -849,7 +849,7 @@ static qboolean R_LoadMD3 (model_t *mod, int lod, void *buffer, const char *mod_
 	}
 
 	if ( mod->md3[lod]->numFrames < 1 ) {
-		ri->Printf( PRINT_WARNING, "R_LoadMD3: %s has no frames\n", mod_name );
+		ri.Printf( PRINT_WARNING, "R_LoadMD3: %s has no frames\n", mod_name );
 		return qfalse;
 	}
 
@@ -937,9 +937,9 @@ static qboolean R_LoadMD3 (model_t *mod, int lod, void *buffer, const char *mod_
 		// swap all the triangles
 		tri = (md3Triangle_t *) ( (byte *)surf + surf->ofsTriangles );
 		for ( j = 0 ; j < surf->numTriangles ; j++, tri++ ) {
-			LL(tri->indexes[0]);
-			LL(tri->indexes[1]);
-			LL(tri->indexes[2]);
+			LL(tri.indexes[0]);
+			LL(tri.indexes[1]);
+			LL(tri.indexes[2]);
 		}
 
 		// swap all the ST
@@ -978,7 +978,7 @@ void CM_SetupShaderProperties(void);
 ** RE_BeginRegistration
 */
 void RE_BeginRegistration( glconfig_t *glconfigOut ) {
-	ri->Hunk_ClearToMark();
+	ri.Hunk_ClearToMark();
 
 	R_Init();
 
@@ -1044,25 +1044,25 @@ void R_Modellist_f( void ) {
 		{
 			default:
 				assert(0);
-				ri->Printf( PRINT_ALL, "UNKNOWN  :      %s\n", mod->name );
+				ri.Printf( PRINT_ALL, "UNKNOWN  :      %s\n", mod->name );
 				break;
 
 			case MOD_BAD:
-				ri->Printf( PRINT_ALL, "MOD_BAD  :      %s\n", mod->name );
+				ri.Printf( PRINT_ALL, "MOD_BAD  :      %s\n", mod->name );
 				break;
 
 			case MOD_BRUSH:
-				ri->Printf( PRINT_ALL, "%8i : (%i) %s\n", mod->dataSize, mod->numLods, mod->name );
+				ri.Printf( PRINT_ALL, "%8i : (%i) %s\n", mod->dataSize, mod->numLods, mod->name );
 				break;
 
 			case MOD_MDXA:
 
-				ri->Printf( PRINT_ALL, "%8i : (%i) %s\n", mod->dataSize, mod->numLods, mod->name );
+				ri.Printf( PRINT_ALL, "%8i : (%i) %s\n", mod->dataSize, mod->numLods, mod->name );
 				break;
 
 			case MOD_MDXM:
 
-				ri->Printf( PRINT_ALL, "%8i : (%i) %s\n", mod->dataSize, mod->numLods, mod->name );
+				ri.Printf( PRINT_ALL, "%8i : (%i) %s\n", mod->dataSize, mod->numLods, mod->name );
 				break;
 
 			case MOD_MESH:
@@ -1073,16 +1073,16 @@ void R_Modellist_f( void ) {
 						lods++;
 					}
 				}
-				ri->Printf( PRINT_ALL, "%8i : (%i) %s\n",mod->dataSize, lods, mod->name );
+				ri.Printf( PRINT_ALL, "%8i : (%i) %s\n",mod->dataSize, lods, mod->name );
 				break;
 		}
 		total += mod->dataSize;
 	}
-	ri->Printf( PRINT_ALL, "%8i : Total models\n", total );
+	ri.Printf( PRINT_ALL, "%8i : Total models\n", total );
 
 /*	this doesn't work with the new hunks
 	if ( tr.world ) {
-		ri->Printf( PRINT_ALL, "%8i : %s\n", tr.world->dataSize, tr.world->name );
+		ri.Printf( PRINT_ALL, "%8i : %s\n", tr.world->dataSize, tr.world->name );
 	} */
 }
 
@@ -1118,7 +1118,7 @@ static md3Tag_t *R_GetTag( md3Header_t *mod, int frame, const char *tagName ) {
 R_LerpTag
 ================
 */
-void	R_LerpTag( orientation_t *tag, qhandle_t handle, int startFrame, int endFrame,
+int	R_LerpTag( orientation_t *tag, qhandle_t handle, int startFrame, int endFrame,
 					 float frac, const char *tagName ) {
 	md3Tag_t	*start, *finish;
 	int		i;
@@ -1135,13 +1135,13 @@ void	R_LerpTag( orientation_t *tag, qhandle_t handle, int startFrame, int endFra
 	{
 		AxisClear( tag->axis );
 		VectorClear( tag->origin );
-		return;
+		return qfalse;
 	}
 
 	if ( !start || !finish ) {
 		AxisClear( tag->axis );
 		VectorClear( tag->origin );
-		return;
+		return qfalse;
 	}
 
 	frontLerp = frac;
@@ -1156,6 +1156,7 @@ void	R_LerpTag( orientation_t *tag, qhandle_t handle, int startFrame, int endFra
 	VectorNormalize( tag->axis[0] );
 	VectorNormalize( tag->axis[1] );
 	VectorNormalize( tag->axis[2] );
+	return qtrue;
 }
 
 
