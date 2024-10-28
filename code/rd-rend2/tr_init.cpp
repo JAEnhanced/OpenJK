@@ -2470,6 +2470,7 @@ Q_EXPORT refexport_t* QDECL GetRefAPI ( int apiVersion, refimport_t *rimp ) {
 	re.G2API_SetBoneAnim = G2API_SetBoneAnim;
 	re.G2API_SetBoneAnimIndex = G2API_SetBoneAnimIndex;
 	re.G2API_SetBoneAngles = G2API_SetBoneAngles;
+	re.G2API_SetBoneAnglesOffset = G2API_SetBoneAnglesOffset;
 	re.G2API_SetBoneAnglesIndex = G2API_SetBoneAnglesIndex;
 	re.G2API_SetBoneAnglesMatrix = G2API_SetBoneAnglesMatrix;
 	re.G2API_SetBoneAnglesMatrixIndex = G2API_SetBoneAnglesMatrixIndex;
@@ -2494,6 +2495,8 @@ Q_EXPORT refexport_t* QDECL GetRefAPI ( int apiVersion, refimport_t *rimp ) {
 	re.G2API_ClearSkinGore = G2API_ClearSkinGore;
 	//re.G2API_GetNumGoreMarks = G2API_GetNumGoreMarks; // MP
 #endif
+
+	re.G2API_SetTintType = G2API_SetTintType;
 	
 #ifdef G2_PERFORMANCE_ANALYSIS
 	re.G2Time_ReportTimers = G2Time_ReportTimers;

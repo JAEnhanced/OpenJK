@@ -2548,3 +2548,12 @@ const char *G2API_GetModelName ( CGhoul2Info_v& ghoul2, int modelIndex )
 {
 	return ghoul2[modelIndex].mFileName;
 }
+
+
+void G2API_SetTintType(CGhoul2Info *ghlInfo, g2Tints_t tintType)
+{
+    if (G2_SetupModelPointers(ghlInfo))
+    {
+        ghlInfo->tintType = tintType;
+    }
+}
