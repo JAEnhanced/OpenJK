@@ -3297,7 +3297,11 @@ void R_AddGhoulSurfaces( trRefEntity_t *ent, int entityNum )
 			}
 			else
 #endif
-				if (ent->e.customSkin)
+				if (ent->e.customSkin && ghoul2[modelList[j]].mCustomSkin)
+				{
+					skin = R_GetSkinByHandle(ghoul2[modelList[j]].mCustomSkin );
+				}
+				else if (ent->e.customSkin)
 				{
 					skin = R_GetSkinByHandle(ent->e.customSkin);
 				}
