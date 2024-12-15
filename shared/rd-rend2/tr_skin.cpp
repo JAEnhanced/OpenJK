@@ -83,6 +83,94 @@ bool RE_SplitSkins(const char *INname, char *skinhead, char *skintorso, char *sk
 	return false;
 }
 
+/*
+ ===============
+ RE_SplitSkinsNew
+ input = skinname, possibly being a macro for five skins
+ return= true if five part skins found
+ output= qualified names to five skins if return is true, undefined if false
+ ===============
+ */
+bool RE_SplitSkinsNew(const char *INname, char *skinhead, char *skintorso, char *skinlower, char *skin4, char *skin5)
+{	//INname= "models/weapons2/saber/|_|skin1|skin2|skin3|skin4|skin5";
+	if (strstr(INname, "|_|"))
+	{
+		char name[MAX_QPATH];
+		strcpy(name, INname);
+		char *p = strstr(name, "|_|");
+		*p=0;
+		p+=3;
+		//fill in the base path
+		strcpy (skinhead, name);
+		strcpy (skintorso, name);
+		strcpy (skinlower, name);
+		strcpy (skin4, name);
+		strcpy (skin5, name);
+
+		//now get the the individual files
+
+		//advance to second
+		char *p2 = strchr(p, '|');
+		if (!p2)
+		{
+			strcat (skinhead, p);
+			strcat (skinhead, ".skin");
+			return true;
+		}
+		*p2=0;
+		p2++;
+		strcat (skinhead, p);
+		strcat (skinhead, ".skin");
+
+
+		//advance to third
+		p = strchr(p2, '|');
+		if (!p)
+		{
+			strcat (skintorso,p2);
+			strcat (skintorso, ".skin");
+			return true;
+		}
+		*p=0;
+		p++;
+		strcat (skintorso,p2);
+		strcat (skintorso, ".skin");
+
+		//fourth...
+		p2 = strchr(p, '|');
+		if (!p2)
+		{
+			strcat (skinlower, p);
+			strcat (skinlower, ".skin");
+			return true;
+		}
+		*p2=0;
+		p2++;
+		strcat (skinlower, p);
+		strcat (skinlower, ".skin");
+
+		//fifth...
+		p = strchr(p2, '|');
+		if (!p)
+		{
+			strcat (skin4,p2);
+			strcat (skin4, ".skin");
+			return true;
+		}
+		*p=0;
+		p++;
+		strcat (skin4,p2);
+		strcat (skin4, ".skin");
+
+
+		strcat (skin5,p);
+		strcat (skin5, ".skin");
+
+		return true;
+	}
+	return false;
+}
+
 // given a name, go get the skin we want and return
 qhandle_t RE_RegisterIndividualSkin( const char *name , qhandle_t hSkin)
 {
@@ -216,7 +304,34 @@ qhandle_t RE_RegisterSkin( const char *name ) {
 	char skinhead[MAX_QPATH]={0};
 	char skintorso[MAX_QPATH]={0};
 	char skinlower[MAX_QPATH]={0};
-	if ( RE_SplitSkins(name, (char*)&skinhead, (char*)&skintorso, (char*)&skinlower ) )
+	char skin4[MAX_QPATH] = {0};
+	char skin5[MAX_QPATH] = {0};
+	if ( RE_SplitSkinsNew(name, (char*)&skinhead, (char*)&skintorso, (char*)&skinlower, (char*)&skin4, (char*)&skin5 ) )
+	{//up to five part
+		qhandle_t appendSkin;
+		hSkin = RE_RegisterIndividualSkin(skinhead, hSkin);
+		appendSkin = RE_RegisterIndividualSkin(skintorso, hSkin);
+		if (hSkin && appendSkin)
+		{
+			hSkin = appendSkin;
+			appendSkin = RE_RegisterIndividualSkin(skinlower, hSkin);
+			if (hSkin && appendSkin)
+			{
+				hSkin = appendSkin;
+				appendSkin = RE_RegisterIndividualSkin(skin4, hSkin);
+				if (hSkin && appendSkin)
+				{
+					hSkin = appendSkin;
+					appendSkin = RE_RegisterIndividualSkin(skin5, hSkin);
+					if (hSkin && appendSkin)
+					{
+						hSkin = appendSkin;
+					}
+				}
+			}
+		}
+	}
+	else if ( RE_SplitSkins(name, (char*)&skinhead, (char*)&skintorso, (char*)&skinlower ) )
 	{//three part
 		hSkin = RE_RegisterIndividualSkin(skinhead, hSkin);
 		if (hSkin)
